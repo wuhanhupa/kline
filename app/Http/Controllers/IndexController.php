@@ -8,14 +8,21 @@ use Illuminate\Support\Facades\Redis;
 
 class IndexController extends Controller
 {
-    //
+    /**
+     * 首页
+     * TODO 后续完善展示
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
-
         return view("index");
     }
 
-
+    /**
+     * Ted数据库的数据表列表
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function ted()
     {
         //查询上海内网ted数据库数据表
@@ -26,6 +33,11 @@ class IndexController extends Controller
         return view("ted", compact("list"));
     }
 
+    /**
+     * 查询 ted数据表的记录条数
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function tedInfo(Request $request)
     {
 
@@ -94,13 +106,19 @@ class IndexController extends Controller
         return view("data", compact("data", "tableName", "pair", "interval"));
     }
 
+    /**
+     * 直接写入redis
+     * TODO 直接写入有问题，需要改造方法
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function writeRedis(Request $request)
     {
 
         $tableName = $request->get("tableName");
         $pair = strtolower($request->get("pair"));
         $interval = $request->get("interval");
-        $sql = "SELECT * FROM " . $tableName . " WHERE  pair='" . $pair . "' AND `interval`='" . $interval."'";
+        $sql = "SELECT * FROM " . $tableName . " WHERE  pair='" . $pair . "' AND `interval`='" . $interval . "'";
 
         $list = DB::select($sql);
 
@@ -147,8 +165,12 @@ class IndexController extends Controller
         ]);
     }
 
-
-    public function redis_list() {
+    /**
+     * redis K线 键名列表
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function redis_list()
+    {
         $redis = Redis::connection();
 
         $redis->select(5);
@@ -207,6 +229,11 @@ class IndexController extends Controller
         return "kline:" . $pair . ":" . $key;
     }
 
+    /**
+     * 获取交易对的步长设置即小数位数
+     * @param $pair 交易对
+     * @return int 步长
+     */
     protected function getStepByPair($pair)
     {
         switch ($pair) {

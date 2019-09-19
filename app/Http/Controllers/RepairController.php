@@ -34,7 +34,12 @@ class RepairController extends Controller
         return view("repair/index", compact("list", "start", "end", "pair", "interval","key"));
     }
 
-
+    /**
+     * 执行redis覆盖操作
+     * TODO 需要进一步完善
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function search(Request $request)
     {
         set_time_limit(0);
