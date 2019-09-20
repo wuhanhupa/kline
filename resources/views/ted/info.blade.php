@@ -9,7 +9,7 @@
                     <div class="box-header">
                         <h3 class="box-title">数据库搜索条件</h3>
                     </div>
-                    <form action="{{url('tep/info')}}" method="get">
+                    <form>
                         <div class="box-body">
                             <div class="form-group">
                                 <div class="input-group">

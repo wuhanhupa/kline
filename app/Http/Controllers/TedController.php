@@ -39,7 +39,7 @@ class TedController extends Controller
     {
         $tableName = $request->get('tableName');
 
-        //默认查询BTC 一天以及bitfinex交易所数据源
+        //默认查询BTC以及bitfinex交易所数据源
         /*$where = [
             'pair' => 'BTC_USDT',
             'exp_name' => 'bitfinex'
@@ -58,9 +58,9 @@ class TedController extends Controller
         $list = DB::select($sql);
         /*$list = DB::table($tableName)
             ->select(DB::raw("count(*) as nums,exp_name,pair"))
-            ->where($where)->groupBy(['pair', 'exp_name'])->get();*/
+            ->where($where)->get()->groupBy(['pair', 'exp_name']);
 
-        //dd($list);
+        dd($list);*/
 
         return view("ted/info", compact("list", "tableName", "expName"));
     }
