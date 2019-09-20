@@ -1,23 +1,24 @@
-<header class="header">
-    <a href="index.html" class="logo">
-        <!-- Add the class icon to your logo image or logo icon to add the margining -->
-        AdminLTE
+<header class="main-header">
+    <!-- Logo -->
+    <a href="index2.html" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>A</b>LT</span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b>Admin</b>LTE</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
-    <nav class="navbar navbar-static-top" role="navigation">
+    <nav class="navbar navbar-static-top">
         <!-- Sidebar toggle button-->
-        <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
         </a>
-        <div class="navbar-right">
+
+        <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-envelope"></i>
+                        <i class="fa fa-envelope-o"></i>
                         <span class="label label-success">4</span>
                     </a>
                     <ul class="dropdown-menu">
@@ -28,7 +29,7 @@
                                 <li><!-- start message -->
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="img/avatar3.png" class="img-circle" alt="User Image"/>
+                                            <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Support Team
@@ -36,11 +37,12 @@
                                         </h4>
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
-                                </li><!-- end message -->
+                                </li>
+                                <!-- end message -->
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="img/avatar2.png" class="img-circle" alt="user image"/>
+                                            <img src="{{asset('dist/img/user3-128x128.jpg')}}" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             AdminLTE Design Team
@@ -52,7 +54,7 @@
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="img/avatar.png" class="img-circle" alt="user image"/>
+                                            <img src="{{asset('dist/img/user4-128x128.jpg')}}" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Developers
@@ -64,7 +66,7 @@
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="img/avatar2.png" class="img-circle" alt="user image"/>
+                                            <img src="{{asset('dist/img/user3-128x128.jpg')}}" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Sales Department
@@ -76,7 +78,7 @@
                                 <li>
                                     <a href="#">
                                         <div class="pull-left">
-                                            <img src="img/avatar.png" class="img-circle" alt="user image"/>
+                                            <img src="{{asset('dist/img/user4-128x128.jpg')}}" class="img-circle" alt="User Image">
                                         </div>
                                         <h4>
                                             Reviewers
@@ -93,7 +95,7 @@
                 <!-- Notifications: style can be found in dropdown.less -->
                 <li class="dropdown notifications-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-warning"></i>
+                        <i class="fa fa-bell-o"></i>
                         <span class="label label-warning">10</span>
                     </a>
                     <ul class="dropdown-menu">
@@ -103,28 +105,28 @@
                             <ul class="menu">
                                 <li>
                                     <a href="#">
-                                        <i class="ion ion-ios7-people info"></i> 5 new members joined today
+                                        <i class="fa fa-users text-aqua"></i> 5 new members joined today
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-warning danger"></i> Very long description here that may not fit into the page and may cause design problems
+                                        <i class="fa fa-warning text-yellow"></i> Very long description here that may not fit into the
+                                        page and may cause design problems
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="fa fa-users warning"></i> 5 new members joined
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a href="#">
-                                        <i class="ion ion-ios7-cart success"></i> 25 sales made
+                                        <i class="fa fa-users text-red"></i> 5 new members joined
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="ion ion-ios7-person danger"></i> You changed your username
+                                        <i class="fa fa-shopping-cart text-green"></i> 25 sales made
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i class="fa fa-user text-red"></i> You changed your username
                                     </a>
                                 </li>
                             </ul>
@@ -135,7 +137,7 @@
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-tasks"></i>
+                        <i class="fa fa-flag-o"></i>
                         <span class="label label-danger">9</span>
                     </a>
                     <ul class="dropdown-menu">
@@ -150,12 +152,14 @@
                                             <small class="pull-right">20%</small>
                                         </h3>
                                         <div class="progress xs">
-                                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar"
+                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                 <span class="sr-only">20% Complete</span>
                                             </div>
                                         </div>
                                     </a>
-                                </li><!-- end task item -->
+                                </li>
+                                <!-- end task item -->
                                 <li><!-- Task item -->
                                     <a href="#">
                                         <h3>
@@ -163,12 +167,14 @@
                                             <small class="pull-right">40%</small>
                                         </h3>
                                         <div class="progress xs">
-                                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar"
+                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                 <span class="sr-only">40% Complete</span>
                                             </div>
                                         </div>
                                     </a>
-                                </li><!-- end task item -->
+                                </li>
+                                <!-- end task item -->
                                 <li><!-- Task item -->
                                     <a href="#">
                                         <h3>
@@ -176,12 +182,14 @@
                                             <small class="pull-right">60%</small>
                                         </h3>
                                         <div class="progress xs">
-                                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar"
+                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                 <span class="sr-only">60% Complete</span>
                                             </div>
                                         </div>
                                     </a>
-                                </li><!-- end task item -->
+                                </li>
+                                <!-- end task item -->
                                 <li><!-- Task item -->
                                     <a href="#">
                                         <h3>
@@ -189,12 +197,14 @@
                                             <small class="pull-right">80%</small>
                                         </h3>
                                         <div class="progress xs">
-                                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar"
+                                                 aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
                                                 <span class="sr-only">80% Complete</span>
                                             </div>
                                         </div>
                                     </a>
-                                </li><!-- end task item -->
+                                </li>
+                                <!-- end task item -->
                             </ul>
                         </li>
                         <li class="footer">
@@ -205,29 +215,33 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="glyphicon glyphicon-user"></i>
-                        <span>Jane Doe <i class="caret"></i></span>
+                        <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
+                        <span class="hidden-xs">Alexander Pierce</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
-                        <li class="user-header bg-light-blue">
-                            <img src="img/avatar3.png" class="img-circle" alt="User Image" />
+                        <li class="user-header">
+                            <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
+
                             <p>
-                                Jane Doe - Web Developer
+                                Alexander Pierce - Web Developer
                                 <small>Member since Nov. 2012</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
                         <li class="user-body">
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
+                            <div class="row">
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Followers</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Sales</a>
+                                </div>
+                                <div class="col-xs-4 text-center">
+                                    <a href="#">Friends</a>
+                                </div>
                             </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
-                            </div>
+                            <!-- /.row -->
                         </li>
                         <!-- Menu Footer-->
                         <li class="user-footer">
@@ -239,6 +253,10 @@
                             </div>
                         </li>
                     </ul>
+                </li>
+                <!-- Control Sidebar Toggle Button -->
+                <li>
+                    <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                 </li>
             </ul>
         </div>

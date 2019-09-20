@@ -19,96 +19,9 @@ class IndexController extends Controller
     }
 
     /**
-     * Ted数据库的数据表列表
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function ted()
-    {
-        //查询上海内网ted数据库数据表
-        $sql = "select table_name,table_rows from information_schema.tables where table_schema='ted' and table_name like '%kline_data%'";
-
-        $list = DB::select($sql);
-
-        return view("ted", compact("list"));
-    }
-
-    /**
-     * 查询 ted数据表的记录条数
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function tedInfo(Request $request)
-    {
-
-        $tableName = $request->get('tableName');
-
-        $sql = "SELECT pair,`interval`,COUNT(*) as nums FROM " . $tableName . " WHERE  pair in ('BTC_USDT','ETH_USDT','EOS_USDT','LTC_USDT','XRP_USDT')  GROUP BY pair,`interval`";
-
-        $list = DB::select($sql);
-
-        //dd($list);
-
-        return view("ted_info", compact("list", "tableName"));
-    }
-
-    /**
-     * 组装redis数据并预览
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function handleRedisData(Request $request)
-    {
-
-        $tableName = $request->get("tableName");
-        $pair = $request->get("pair");
-        $interval = $request->get("interval");
-
-        $sql = "SELECT * FROM " . $tableName . " WHERE  pair='" . $pair . "' AND `interval`='" . $interval . "'";
-
-        $list = DB::select($sql);
-
-        //
-        $data = [];
-        foreach ($list as $k => $val) {
-            $data[$k]['exp_name'] = $val->exp_name;
-            $data[$k]['pair'] = $val->pair;
-            $data[$k]['interval'] = $val->interval;
-            $data[$k]['score'] = $val->open_time / 1000;
-
-            //如果是bitfinex使用不同的价格组合
-            if ($val->exp_name == "bitfinex") {
-                $data[$k]['data'] = [
-                    $val->open_time / 1000,
-                    round($val->volume, 2),
-                    round($val->open, 2),
-                    round($val->low, 2),
-                    round($val->close, 2),
-                    round($val->high, 2)
-                ];
-            } else {
-                $data[$k]['data'] = [
-                    $val->open_time / 1000,
-                    round($val->volume, 2),
-                    round($val->open, 2),
-                    round($val->high, 2),
-                    round($val->low, 2),
-                    round($val->close, 2)
-                ];
-            }
-
-            $data[$k]['data_json'] = json_encode($data[$k]['data']);
-            $data[$k]['date'] = date("Y-m-d H:i:s", $val->open_time / 1000);
-        }
-
-        //dd($data);
-
-        return view("data", compact("data", "tableName", "pair", "interval"));
-    }
-
-    /**
      * 直接写入redis
      * TODO 直接写入有问题，需要改造方法
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */

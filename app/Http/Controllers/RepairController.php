@@ -16,27 +16,27 @@ class RepairController extends Controller
     //
     public function index(Request $request)
     {
-        $list = [];
-
         $start = $request->get("start");
         $end = $request->get("end");
         $pair = $request->get("pair");
         $interval = $request->get("interval");
 
-        $redis = Redis::connection();
-        //组装键名
-        $key = "kline:" . $pair . ":" . $interval;
-        //根据分值查询redis数据
-        $list = $redis->zrangebyscore($key, $start, $end);
+        $list = [];
+        if ($start && $end) {
+            $redis = Redis::connection();
+            //组装键名
+            $key = "kline:" . $pair . ":" . $interval;
+            //根据分值查询redis数据
+            $list = $redis->zrangebyscore($key, $start, $end);
+        }
 
-
-
-        return view("repair/index", compact("list", "start", "end", "pair", "interval","key"));
+        return view("repair/index", compact("list", "start", "end", "pair", "interval", "key"));
     }
 
     /**
      * 执行redis覆盖操作
      * TODO 需要进一步完善
+     *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -60,9 +60,9 @@ class RepairController extends Controller
         //根据时间戳判断年和月
         $hou = date("Ym", $start);
 
-        $tableName = "kline_data_".$hou;
+        $tableName = "kline_data_" . $hou;
 
-        $sql = "select * from ".$tableName." where exp_name='".$yuan."' and `interval`='".$inte."' and open_time>=".($start."000"). " and open_time<=".($end."000"). " and pair='".strtoupper($pair)."'";
+        $sql = "select * from " . $tableName . " where exp_name='" . $yuan . "' and `interval`='" . $inte . "' and open_time>=" . ($start . "000") . " and open_time<=" . ($end . "000") . " and pair='" . strtoupper($pair) . "'";
 
         $list = DB::select($sql);
 
@@ -105,7 +105,7 @@ class RepairController extends Controller
             //直接写入redis
             $check = $redis->zrangebyscore($key, $score, $score);
             if ($check) {
-                 $redis->zremrangebyscore($key, $score, $score);
+                $redis->zremrangebyscore($key, $score, $score);
             }
             $redis->zadd($key, $score, json_encode($data));
         }
