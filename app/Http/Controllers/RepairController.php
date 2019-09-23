@@ -80,27 +80,14 @@ class RepairController extends Controller
         foreach ($list as $k => $val) {
             $score = $val->open_time / 1000;
 
-            if ($val->exp_name == "bitfinex") {
-                $data = [
-                    $val->open_time / 1000,
-                    round($val->volume, 2),
-                    round($val->open, 2),
-                    round($val->low, 2),
-                    round($val->close, 2),
-                    round($val->high, 2)
-                ];
-            } else {
-                $data = [
-                    $val->open_time / 1000,
-                    round($val->volume, 2),
-                    round($val->open, 2),
-                    round($val->high, 2),
-                    round($val->low, 2),
-                    round($val->close, 2)
-                ];
-            }
-
-            //echo json_encode($data);
+            $data = [
+                $val->open_time / 1000,
+                round($val->volume, 2),
+                round($val->open, 2),
+                round($val->high, 2),
+                round($val->low, 2),
+                round($val->close, 2)
+            ];
 
             //直接写入redis
             $check = $redis->zrangebyscore($key, $score, $score);

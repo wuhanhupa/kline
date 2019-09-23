@@ -11,20 +11,27 @@
 |
 */
 
-Route::get('/', "IndexController@index");
+Route::get('/login', 'LoginController@index');
+Route::any('/signIn', 'LoginController@signIn');
 
-Route::get('/ted', "TedController@index");
+Route::group(['middleware' => 'checkLogin'], function () {
+    Route::get('/', "IndexController@index");
 
-Route::any('/ted/info', "TedController@info");
+    Route::get('/ted', "TedController@index");
 
-Route::get('/ted/preview', "TedController@preview");
+    Route::any('/ted/info', "TedController@info");
 
-Route::get("/repair/index", "RepairController@index");
+    Route::get('/ted/preview', "TedController@preview");
 
-Route::any("/writeRedis", "IndexController@writeRedis");
+    Route::get("/repair/index", "RepairController@index");
 
-Route::any("/redis_list", "IndexController@redis_list");
+    Route::any("/writeRedis", "IndexController@writeRedis");
 
-Route::any("/repair/search", "RepairController@search");
+    Route::any("/redis_list", "IndexController@redis_list");
 
-Route::get("/test", "TestController@index");
+    Route::any("/repair/search", "RepairController@search");
+
+    Route::get("/test", "TestController@index");
+});
+
+

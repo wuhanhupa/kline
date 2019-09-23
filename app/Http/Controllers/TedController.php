@@ -53,7 +53,7 @@ class TedController extends Controller
             $pair = $request->get('pair');
         }
 
-        $sql = "SELECT pair,`interval`,COUNT(*) as nums FROM " . $tableName . " WHERE exp_name='".$expName."' and pair='".$pair."'  GROUP BY pair,`interval`";
+        $sql = "SELECT pair,`interval`,COUNT(*) as nums FROM " . $tableName . " WHERE exp_name='" . $expName . "' and pair='" . $pair . "'  GROUP BY pair,`interval`";
 
         $list = DB::select($sql);
         /*$list = DB::table($tableName)
@@ -78,7 +78,7 @@ class TedController extends Controller
         $interval = $request->get("interval");
         $expName = $request->get('expName');
 
-        $sql = "SELECT * FROM " . $tableName . " WHERE  pair='" . $pair . "' AND `interval`='" . $interval . "' AND exp_name='".$expName."'";
+        $sql = "SELECT * FROM " . $tableName . " WHERE  pair='" . $pair . "' AND `interval`='" . $interval . "' AND exp_name='" . $expName . "'";
         $list = DB::select($sql);
 
         $data = [];
@@ -88,26 +88,14 @@ class TedController extends Controller
             $data[$k]['interval'] = $val->interval;
             $data[$k]['score'] = $val->open_time / 1000;
 
-            //如果是bitfinex使用不同的价格组合
-            if ($val->exp_name == "bitfinex") {
-                $data[$k]['data'] = [
-                    $val->open_time / 1000,
-                    round($val->volume, 2),
-                    round($val->open, 2),
-                    round($val->low, 2),
-                    round($val->close, 2),
-                    round($val->high, 2)
-                ];
-            } else {
-                $data[$k]['data'] = [
-                    $val->open_time / 1000,
-                    round($val->volume, 2),
-                    round($val->open, 2),
-                    round($val->high, 2),
-                    round($val->low, 2),
-                    round($val->close, 2)
-                ];
-            }
+            $data[$k]['data'] = [
+                $val->open_time / 1000,
+                round($val->volume, 2),
+                round($val->open, 2),
+                round($val->high, 2),
+                round($val->low, 2),
+                round($val->close, 2)
+            ];
 
             $data[$k]['data_json'] = json_encode($data[$k]['data']);
             $data[$k]['date'] = date("Y-m-d H:i:s", $val->open_time / 1000);
