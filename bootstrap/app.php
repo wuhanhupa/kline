@@ -11,6 +11,11 @@
 |
 */
 
+// 引入常量文件
+require __DIR__ . '/initBase.php';
+// 公共函数
+require __DIR__ . '/common.php';
+
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );

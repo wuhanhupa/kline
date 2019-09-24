@@ -37,32 +37,37 @@ class TedController extends Controller
      */
     public function info(Request $request)
     {
-        $tableName = $request->get('tableName');
+        try {
+            $tableName = $request->get('tableName');
 
-        //默认查询BTC以及bitfinex交易所数据源
-        /*$where = [
-            'pair' => 'BTC_USDT',
-            'exp_name' => 'bitfinex'
-        ];*/
-        $expName = 'bitfinex';
-        $pair = 'BTC_USDT';
-        if ($request->has("expName")) {
-            $expName = $request->get('expName');
+            //默认查询BTC以及bitfinex交易所数据源
+            /*$where = [
+                'pair' => 'BTC_USDT',
+                'exp_name' => 'bitfinex'
+            ];*/
+            $expName = 'bitfinex';
+            $pair = 'BTC_USDT';
+            if ($request->has("expName")) {
+                $expName = $request->get('expName');
+            }
+            if ($request->has('pair')) {
+                $pair = $request->get('pair');
+            }
+
+            $sql = "SELECT pair,`interval`,COUNT(*) as nums FROM " . $tableName . " WHERE exp_name='" . $expName . "' and pair='" . $pair . "'  GROUP BY pair,`interval`";
+
+            $list = DB::select($sql);
+            /*$list = DB::table($tableName)
+                ->select(DB::raw("count(*) as nums,exp_name,pair"))
+                ->where($where)->get()->groupBy(['pair', 'exp_name']);
+
+            dd($list);*/
+
+            return view("ted/info", compact("list", "tableName", "expName"));
+        } catch (\Exception $e) {
+            return back()->withErrors([$e->getMessage()]);
         }
-        if ($request->has('pair')) {
-            $pair = $request->get('pair');
-        }
 
-        $sql = "SELECT pair,`interval`,COUNT(*) as nums FROM " . $tableName . " WHERE exp_name='" . $expName . "' and pair='" . $pair . "'  GROUP BY pair,`interval`";
-
-        $list = DB::select($sql);
-        /*$list = DB::table($tableName)
-            ->select(DB::raw("count(*) as nums,exp_name,pair"))
-            ->where($where)->get()->groupBy(['pair', 'exp_name']);
-
-        dd($list);*/
-
-        return view("ted/info", compact("list", "tableName", "expName"));
     }
 
     /**
@@ -81,6 +86,8 @@ class TedController extends Controller
         $sql = "SELECT * FROM " . $tableName . " WHERE  pair='" . $pair . "' AND `interval`='" . $interval . "' AND exp_name='" . $expName . "'";
         $list = DB::select($sql);
 
+        $step = getStepByPair($pair);
+
         $data = [];
         foreach ($list as $k => $val) {
             $data[$k]['exp_name'] = $val->exp_name;
@@ -91,10 +98,10 @@ class TedController extends Controller
             $data[$k]['data'] = [
                 $val->open_time / 1000,
                 round($val->volume, 2),
-                round($val->open, 2),
-                round($val->high, 2),
-                round($val->low, 2),
-                round($val->close, 2)
+                round($val->open, $step),
+                round($val->high, $step),
+                round($val->low, $step),
+                round($val->close, $step)
             ];
 
             $data[$k]['data_json'] = json_encode($data[$k]['data']);

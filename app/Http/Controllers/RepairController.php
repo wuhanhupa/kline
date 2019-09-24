@@ -21,11 +21,11 @@ class RepairController extends Controller
         $pair = $request->get("pair");
         $interval = $request->get("interval");
 
+        //组装键名
+        $key = "kline:" . $pair . ":" . $interval;
         $list = [];
         if ($start && $end) {
             $redis = Redis::connection();
-            //组装键名
-            $key = "kline:" . $pair . ":" . $interval;
             //根据分值查询redis数据
             $list = $redis->zrangebyscore($key, $start, $end);
         }
@@ -55,14 +55,14 @@ class RepairController extends Controller
         $yuan = $request->get("yuan");
 
         //tep的时间类型转换
-        $inte = $this->getNameByInterval($interval);
+        $int = intervalTurnString($interval);
 
         //根据时间戳判断年和月
         $hou = date("Ym", $start);
 
         $tableName = "kline_data_" . $hou;
 
-        $sql = "select * from " . $tableName . " where exp_name='" . $yuan . "' and `interval`='" . $inte . "' and open_time>=" . ($start . "000") . " and open_time<=" . ($end . "000") . " and pair='" . strtoupper($pair) . "'";
+        $sql = "select * from " . $tableName . " where exp_name='" . $yuan . "' and `interval`='" . $int . "' and open_time>=" . ($start . "000") . " and open_time<=" . ($end . "000") . " and pair='" . strtoupper($pair) . "'";
 
         $list = DB::select($sql);
 
@@ -74,8 +74,7 @@ class RepairController extends Controller
         //清除区间内所有的redis记录
         $redis->zremrangebyscore($key, $start, $end);
 
-
-        $step = $this->getStepByPair($pair);
+        $step = getStepByPair($pair);
 
         foreach ($list as $k => $val) {
             $score = $val->open_time / 1000;
@@ -83,10 +82,10 @@ class RepairController extends Controller
             $data = [
                 $val->open_time / 1000,
                 round($val->volume, 2),
-                round($val->open, 2),
-                round($val->high, 2),
-                round($val->low, 2),
-                round($val->close, 2)
+                round($val->open, $step),
+                round($val->high, $step),
+                round($val->low, $step),
+                round($val->close, $step)
             ];
 
             //直接写入redis
@@ -97,67 +96,6 @@ class RepairController extends Controller
             $redis->zadd($key, $score, json_encode($data));
         }
 
-
         return back()->with(["msg" => "覆盖成功"]);
-    }
-
-
-    protected function getStepByPair($pair)
-    {
-        switch ($pair) {
-            case "ltc_usdt":
-            case "eth_usdt":
-                return 2;
-                break;
-            case "eos_usdt":
-                return 3;
-                break;
-            case "xrp_usdt":
-                return 4;
-                break;
-            default:
-                return 1;
-                break;
-        }
-    }
-
-    protected function getNameByInterval($interval)
-    {
-        switch ($interval) {
-            case 720:
-                $key = "12hour";
-                break;
-            case 14 * 24 * 60:
-                $key = "14day";
-                break;
-            case 15:
-                $key = "15min";
-                break;
-            case 1440:
-                $key = "1day";
-                break;
-            case 60:
-                $key = "1hour";
-                break;
-            case 1:
-                $key = "1min";
-                break;
-            case 30:
-                $key = "30min";
-                break;
-            case 5:
-                $key = "5min";
-                break;
-            case 360:
-                $key = "6hour";
-                break;
-            case 7 * 24 * 60:
-                $key = "7day";
-                break;
-            default:
-                $key = 0;
-                break;
-        }
-        return $key;
     }
 }

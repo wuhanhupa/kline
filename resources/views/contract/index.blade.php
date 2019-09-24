@@ -5,101 +5,55 @@
     <section class="content">
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header">
-                        <h3 class="box-title">Redis搜索条件</h3>
+                        <h3 class="box-title">数据表搜索条件</h3>
                     </div>
-                    <form action="{{url('repair/index')}}" method="get">
+                    <form action="{{url('contract/index')}}" method="get">
                         <div class="box-body">
-                            <div class="form-group">
-                                <div class="input-group date">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-default">起始时间戳</button>
-                                    </div>
-                                    <!-- /btn-group -->
-                                    <input type="text" class="form-control" name="start" id="datepicker"
-                                           @if($start) value="{{$start}}" @endif required autocomplete="off">
-                                </div>
-                                <!-- /.input group -->
-                            </div>
-                            <!-- /.form group -->
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <div class="input-group-btn">
-                                        <button type="button" class="btn btn-info">截止时间戳</button>
-                                    </div>
-                                    <input type="text" class="form-control" name="end" id="reservation"
-                                           @if($end) value="{{$end}}" @endif required autocomplete="off">
-                                </div>
-                            </div>
 
-                            <div class="form-group">
+                            <div class="form-group col-md-6">
                                 <div class="input-group">
                                     <div class="input-group-btn">
-                                        <button type="button" class="btn btn-danger">交&nbsp;易&nbsp;对</button>
+                                        <button type="button" class="btn btn-danger">数据表</button>
                                     </div>
-                                    <select class="form-control" name="pair">
-                                        <option value="btc_usdt" @if($pair=='btc_usdt') selected @endif>BTC_USDT
-                                        </option>
-                                        <option value="eth_usdt" @if($pair=='eth_usdt') selected @endif>ETH_USDT
-                                        </option>
-                                        <option value="eos_usdt" @if($pair=='eos_usdt') selected @endif>EOS_USDT
-                                        </option>
-                                        <option value="ltc_usdt" @if($pair=='ltc_usdt') selected @endif>LTC_USDT
-                                        </option>
-                                        <option value="xrp_usdt" @if($pair=='xrp_usdt') selected @endif>XRP_USDT
-                                        </option>
+                                    <select class="form-control" name="table">
+                                        @if(count($tables) > 0)
+                                            @foreach($tables as $table)
+                                                <option value="{{$table->table_name}}">{{$table->table_name}}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
+                                    <!-- /.input group -->
                                 </div>
-                                <!-- /.input group -->
                             </div>
-                            <!-- /.form group -->
 
-                            <div class="form-group">
+                            <div class="form-group col-md-6">
                                 <div class="input-group">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-success">时间类型</button>
                                     </div>
                                     <select class="form-control col-md-3" name="interval">
-                                        <option value="1" @if($interval=='1') selected @endif>1min</option>
-                                        <option value="5" @if($interval=='5') selected @endif>5min</option>
-                                        <option value="15" @if($interval=='15') selected @endif>15min</option>
-                                        <option value="30" @if($interval=='30') selected @endif>30min</option>
-                                        <option value="60" @if($interval=='60') selected @endif>1hour</option>
-                                        <option value="360" @if($interval=='360') selected @endif>6hour</option>
                                         <option value="1440" @if($interval=='1440') selected @endif>1day</option>
+                                        <option value="360" @if($interval=='360') selected @endif>6hour</option>
+                                        <option value="60" @if($interval=='60') selected @endif>1hour</option>
+                                        <option value="30" @if($interval=='30') selected @endif>30min</option>
+                                        <option value="15" @if($interval=='15') selected @endif>15min</option>
+                                        <option value="5" @if($interval=='5') selected @endif>5min</option>
+                                        <option value="1" @if($interval=='1') selected @endif>1min</option>
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">查询当前redis数据</button>
-                        </div>
-                    </form>
-                    <!-- /.box-body -->
-                </div>
-                <!-- /.box -->
-            </div>
-            <div class="col-md-6">
-                <div class="box box-primary">
-                    <div class="box-header">
-                        <h3 class="box-title">数据源选择</h3>
-                    </div>
-                    <form action="{{url('repair/search')}}" method="get">
-                        <div class="box-body">
-                            <input type="hidden" name="_method" value="{{csrf_token()}}"/>
-                            <input type="hidden" name="pair" value="{{$pair}}"/>
-                            <input type="hidden" name="start" value="{{$start}}"/>
-                            <input type="hidden" name="end" value="{{$end}}"/>
-                            <input type="hidden" name="interval" value="{{$interval}}"/>
+
+                            <!-- /.form group -->
                             <!-- Date -->
-                            <div class="form-group">
+                            <div class="form-group col-md-6">
                                 <div class="input-group date">
                                     <div class="input-group-btn">
                                         <button type="button" class="btn btn-danger">数据源</button>
                                     </div>
-                                    <select class="form-control" name="yuan">
+                                    <select class="form-control" name="exp_name">
                                         <option value="bitfinex">bitfinex</option>
                                         <option value="binance">binance</option>
                                         <option value="okexspot">okexspot</option>
@@ -109,26 +63,32 @@
                                 </div>
                                 <!-- /.input group -->
                             </div>
-                            <div class="form-group">
-                                {{--<label>注意：</label>--}}
-                                <textarea class="form-control" rows="6" placeholder="Enter ..." disabled>
-1.选择一个数据源（即交易所）的数据，对现有redis数据进行覆盖。
-
-2.左边的搜索条件搜索出来的数据就是要执行覆盖操作的数据。
-
-3.如果数据过多会出现504超时错误，建议一次提交数据不超过200条。
-                                </textarea>
-                            </div>
-                            <!-- /.form group -->
+                            {{--<div class="form-group col-md-6">
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <button type="button" class="btn btn-success">时间类型</button>
+                                    </div>
+                                    <select class="form-control col-md-3" name="interval">
+                                        <option value="1440" @if($interval=='1440') selected @endif>1day</option>
+                                        <option value="360" @if($interval=='360') selected @endif>6hour</option>
+                                        <option value="60" @if($interval=='60') selected @endif>1hour</option>
+                                        <option value="30" @if($interval=='30') selected @endif>30min</option>
+                                        <option value="15" @if($interval=='15') selected @endif>15min</option>
+                                        <option value="5" @if($interval=='5') selected @endif>5min</option>
+                                        <option value="1" @if($interval=='1') selected @endif>1min</option>
+                                    </select>
+                                </div>
+                            </div>--}}
                         </div>
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-danger">提交覆盖REDIS</button>
+                            <button type="submit" class="btn btn-primary">查询数据并预览</button>
                         </div>
                     </form>
                     <!-- /.box-body -->
                 </div>
                 <!-- /.box -->
             </div>
+
         </div>
 
         <div class="row">
@@ -150,8 +110,8 @@
                             @if(count($list) > 0)
                                 @foreach($list as $val)
                                     <tr>
-                                        <td>{{$key}}</td>
-                                        <td>{{$val}}</td>
+                                        <td>{{ $val->exp_name }}</td>
+                                        <td></td>
                                     </tr>
                                 @endforeach
                             @endif

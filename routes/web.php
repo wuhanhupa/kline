@@ -31,6 +31,8 @@ Route::group(['middleware' => 'checkLogin'], function () {
 
     Route::any("/repair/search", "RepairController@search");
 
+    Route::any('/contract/index', "ContractController@index");
+
     Route::get("/test", "TestController@index");
 });
 
