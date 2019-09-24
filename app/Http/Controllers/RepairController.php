@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Redis;
 
 /**
  * 修复k线
- * Class RepairController
- * @package App\Http\Controllers
  */
 class RepairController extends Controller
 {
@@ -36,9 +34,6 @@ class RepairController extends Controller
     /**
      * 执行redis覆盖操作
      * TODO 需要进一步完善
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function search(Request $request)
     {
@@ -62,10 +57,17 @@ class RepairController extends Controller
 
         $tableName = "kline_data_" . $hou;
 
-        $sql = "select * from " . $tableName . " where exp_name='" . $yuan . "' and `interval`='" . $int . "' and open_time>=" . ($start . "000") . " and open_time<=" . ($end . "000") . " and pair='" . strtoupper($pair) . "'";
+        //$sql = "select * from " . $tableName . " where exp_name='" . $yuan . "' and `interval`='" . $int . "' and open_time>=" . ($start . "000") . " and open_time<=" . ($end . "000") . " and pair='" . strtoupper($pair) . "'";
 
-        $list = DB::select($sql);
+        //$list = DB::select($sql);
 
+        $list = DB::table($tableName)->where([
+            'exp_name' => $yuan,
+            'interval' => $int,
+            'pair' => strtoupper($pair)
+        ])->whereBetween('open_time', [$start."000", $end."000"])->get();
+
+        dd($list);
 
         $redis = Redis::connection();
         //组装键名

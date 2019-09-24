@@ -59,7 +59,6 @@
                             <thead>
                             <tr>
                                 <th>数据表名</th>
-                                <th>记录条数</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -68,7 +67,6 @@
                             @foreach($list as $k => $val)
                                 <tr>
                                     <td>{{ $val->table_name }}</td>
-                                    <td>{{ $val->table_rows }}</td>
                                     <td><a href="/ted/info?tableName={{  $val->table_name }}">查看数据分组</a></td>
                                 </tr>
                             @endforeach

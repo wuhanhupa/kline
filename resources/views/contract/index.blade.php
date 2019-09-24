@@ -101,8 +101,14 @@
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>键名</th>
-                                <th>数据</th>
+                                <th>数据源</th>
+                                <th>交易对</th>
+                                <th>成交量</th>
+                                <th>开盘价</th>
+                                <th>最高价</th>
+                                <th>最低价</th>
+                                <th>收盘价</th>
+                                <th>开盘时间</th>
                             </tr>
                             </thead>
 
@@ -111,7 +117,13 @@
                                 @foreach($list as $val)
                                     <tr>
                                         <td>{{ $val->exp_name }}</td>
-                                        <td></td>
+                                        <td>{{ $val->pair }}</td>
+                                        <td>{{ $val->volume }}</td>
+                                        <td>{{ $val->open }}</td>
+                                        <td>{{ $val->high }}</td>
+                                        <td>{{ $val->low }}</td>
+                                        <td>{{ $val->close }}</td>
+                                        <td>{{ $val->open_time }}</td>
                                     </tr>
                                 @endforeach
                             @endif

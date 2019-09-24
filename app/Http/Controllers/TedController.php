@@ -22,9 +22,7 @@ class TedController extends Controller
     public function index()
     {
         //查询上海内网ted数据库数据表
-        $sql = "select table_name,table_rows from information_schema.tables where table_schema='ted' and table_name like '%kline_data%' ORDER BY table_name DESC";
-
-        $list = DB::select($sql);
+        $list = DB::table('all_table')->orderBy('table_name', 'desc')->get();
 
         return view("ted/index", compact("list"));
     }
@@ -40,14 +38,10 @@ class TedController extends Controller
         try {
             $tableName = $request->get('tableName');
 
-            //默认查询BTC以及bitfinex交易所数据源
-            /*$where = [
-                'pair' => 'BTC_USDT',
-                'exp_name' => 'bitfinex'
-            ];*/
             $expName = 'bitfinex';
             $pair = 'BTC_USDT';
-            if ($request->has("expName")) {
+
+            if ($request->has('expName')) {
                 $expName = $request->get('expName');
             }
             if ($request->has('pair')) {
@@ -57,13 +51,10 @@ class TedController extends Controller
             $sql = "SELECT pair,`interval`,COUNT(*) as nums FROM " . $tableName . " WHERE exp_name='" . $expName . "' and pair='" . $pair . "'  GROUP BY pair,`interval`";
 
             $list = DB::select($sql);
-            /*$list = DB::table($tableName)
-                ->select(DB::raw("count(*) as nums,exp_name,pair"))
-                ->where($where)->get()->groupBy(['pair', 'exp_name']);
 
-            dd($list);*/
+            //$list = DB::table($tableName)->where($where)->get();
 
-            return view("ted/info", compact("list", "tableName", "expName"));
+            return view("ted/info", compact("list", "tableName", "expName", "pair"));
         } catch (\Exception $e) {
             return back()->withErrors([$e->getMessage()]);
         }

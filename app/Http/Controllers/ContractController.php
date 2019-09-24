@@ -19,8 +19,7 @@ class ContractController extends Controller
     {
         try {
             //查询上海内网ted数据库数据表
-            $sql = "select table_name from information_schema.tables where table_schema='ted' and table_name like '%kline_data%' ORDER BY table_name DESC";
-            $tables = DB::select($sql);
+            $tables =  DB::table('all_table')->orderBy('table_name', 'desc')->get();
 
             //根据条件查询对应数据
             $interval = $request->get('interval');
@@ -30,8 +29,8 @@ class ContractController extends Controller
             if ($interval && $exp && $table) {
                 $list = DB::table($table)->where([
                     'exp_name' => $exp,
-                    'interval' => $interval
-                ])->get();
+                    'interval' => intervalTurnString($interval)
+                ])->whereIn('pair', ['BTC_USDT', 'ETH_USDT'])->get();
             }
 
             return view('contract/index', compact('interval', 'tables', 'list', 'exp', 'table'));
