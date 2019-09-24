@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use Exception;
+
 /**
  * 合约交易对 修复
  * xtop交易所对应合约交易对-top30
@@ -34,7 +36,7 @@ class ContractController extends Controller
             }
 
             return view('contract/index', compact('interval', 'tables', 'list', 'exp', 'table'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->withErrors([$e->getMessage()]);
         }
 
