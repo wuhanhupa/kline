@@ -13,6 +13,7 @@
 
 Route::get('/login', 'LoginController@index');
 Route::any('/signIn', 'LoginController@signIn');
+Route::any('/login/signOut', 'LoginController@signOut');
 
 Route::group(['middleware' => 'checkLogin'], function () {
     Route::get('/', "IndexController@index");
@@ -27,11 +28,13 @@ Route::group(['middleware' => 'checkLogin'], function () {
 
     Route::any("/writeRedis", "IndexController@writeRedis");
 
-    Route::any("/redis_list", "IndexController@redis_list");
+    Route::any("/redis/index", "RedisController@index");
 
     Route::any("/repair/search", "RepairController@search");
 
     Route::any('/contract/index', "ContractController@index");
+
+    Route::any('/contract/preview', "ContractController@preview");
 
     Route::get("/test", "TestController@index");
 });

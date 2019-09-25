@@ -64,24 +64,4 @@ class IndexController extends Controller
             "msg" => "success"
         ]);
     }
-
-    /**
-     * redis K线 键名列表
-     */
-    public function redis_list()
-    {
-        $redis = Redis::connection();
-
-        $redis->select(5);
-
-        $keys = $redis->keys("kline:*");
-        //dd($keys);
-        $list = [];
-        foreach ($keys as $k => $key) {
-            $list[$k]['keyName'] = $key;
-            $list[$k]['size'] = $redis->zcard($key);
-        }
-
-        return view("redis_list", compact('list'));
-    }
 }

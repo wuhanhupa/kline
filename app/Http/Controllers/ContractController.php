@@ -25,20 +25,43 @@ class ContractController extends Controller
 
             //根据条件查询对应数据
             $interval = $request->get('interval');
-            $exp = $request->get('exp_name');
-            $table = $request->get('table');
+            $expName = $request->get('exp_name');
+            $tableName = $request->get('table');
             $list = [];
-            if ($interval && $exp && $table) {
-                $list = DB::table($table)->where([
-                    'exp_name' => $exp,
+            if ($interval && $expName && $tableName) {
+                $list = DB::table($tableName)->where([
+                    'exp_name' => $expName,
                     'interval' => intervalTurnString($interval)
                 ])->whereIn('pair', ['BTC_USDT', 'ETH_USDT'])->get();
             }
 
-            return view('contract/index', compact('interval', 'tables', 'list', 'exp', 'table'));
+            return view('contract/index', compact('interval', 'tables', 'list', 'expName', 'tableName'));
         } catch (Exception $e) {
             return back()->withErrors([$e->getMessage()]);
         }
+    }
 
+    /**
+     * 计算top30数据并预览
+     * @param Request $request
+     */
+    public function preview(Request $request)
+    {
+        $tableName = $request->get('tableName');
+        $interval = $request->get('interval');
+        $expName = $request->get('expName');
+
+        //查询比特币数据
+        $btcArr = DB::table($tableName)->where([
+            'exp_name' => $expName,
+            'interval' => intervalTurnString($interval),
+            'pair' => 'BTC_USDT'
+        ])->get();
+        //查询以太坊数据
+        $ethArr = DB::table($tableName)->where([
+            'exp_name' => $expName,
+            'interval' => intervalTurnString($interval),
+            'pair' => 'ETH_USDT'
+        ])->get();
     }
 }
