@@ -51,23 +51,25 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">TED数据库（爬虫抓取的数据源）</h3>
+                        <h3 class="box-title">Redis</h3>
                     </div><!-- /.box-header -->
 
                     <div class="box-body table-responsive">
                         <table id="example2" class="table table-bordered table-hover">
                             <thead>
                             <tr>
-                                <th>数据表名</th>
-                                <th>操作</th>
+                                <th>键名</th>
+                                <th>记录条数</th>
+
                             </tr>
                             </thead>
 
                             <tbody>
                             @foreach($list as $k => $val)
                                 <tr>
-                                    <td>{{ $val->table_name }}</td>
-                                    <td><a href="/ted/info?tableName={{  $val->table_name }}">查看数据分组</a></td>
+                                    <td>{{ $val['keyName'] }}</td>
+                                    <td>{{ $val['size'] }}</td>
+
                                 </tr>
                             @endforeach
                             </tbody>

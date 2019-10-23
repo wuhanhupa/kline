@@ -19,7 +19,7 @@
                                     </div>
                                     <!-- /btn-group -->
                                     <input type="text" class="form-control" name="start" id="datepicker"
-                                           @if($start) value="{{$start}}" @endif required>
+                                           @if($start) value="{{$start}}" @endif required autocomplete="off">
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -30,7 +30,7 @@
                                         <button type="button" class="btn btn-info">截止时间戳</button>
                                     </div>
                                     <input type="text" class="form-control" name="end" id="reservation"
-                                           @if($end) value="{{$end}}" @endif required>
+                                           @if($end) value="{{$end}}" @endif required autocomplete="off">
                                 </div>
                             </div>
 
@@ -210,6 +210,16 @@
                     }
                 }
             });
+
+            //Date picker
+            /*$('#datepicker').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                /!*汉化*!/
+                language: "zh_CN",
+                /!*日期格式*!/
+                format:"yyyy-mm-dd hh:mm:ss",
+            })*/
         })
     </script>
 @endsection

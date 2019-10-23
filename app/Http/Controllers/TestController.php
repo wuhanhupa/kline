@@ -11,16 +11,8 @@ class TestController extends Controller
 
     public function index() {
 
-        $redis = Redis::connection();
+        $configs = config('database');
 
-        $size = $redis->zcount('kline:top30_usdt:360', 1563778800, 1564502400);
-
-        echo $size;
-
-        $list = $redis->zrangebyscore('kline:top30_usdt:360', 1563778800, 1564502400);
-
-        dd($list);
-
-        //echo $redis->zremrangebyscore('kline:top30_usdt:360', 1563778800, 1564502400);
+        dd($configs);
     }
 }

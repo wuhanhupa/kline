@@ -49,6 +49,7 @@
 
 <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
+        @include('error')
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
