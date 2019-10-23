@@ -22,6 +22,7 @@ class RepairController extends Controller
         $interval = $request->get("interval");
 
         $list = [];
+        $key = "";
         if ($start && $end) {
             $redis = Redis::connection();
             //组装键名
